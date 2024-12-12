@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-r&-qb$pyzazj&1ub#p^&-2-r&8al=4y%n(!3r#4hx9$_aig(=)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['195.133.146.14', '127.0.0.1']
 # add that hosts to csrf trusted hosts
@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'rest_framework',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    'drf_yasg',
+    'rest_framework_swagger'
 ]
 
 
