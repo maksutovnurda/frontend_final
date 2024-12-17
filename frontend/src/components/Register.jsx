@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../features/user/userSlice';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const dispatch = useDispatch();
   const { status, error } = useSelector((state) => state.user);
@@ -15,6 +19,12 @@ const Register = () => {
     e.preventDefault();
     dispatch(registerUser(formData));
   };
+
+  useEffect(() => {
+    if (status === 'succeeded') {
+      navigate('/login');
+    }
+  }, [status, navigate]);
 
   return (
     <div>

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const BASE_URL = 'http://195.133.146.14:8090/api/';
 
@@ -12,8 +13,8 @@ const axiosInstance = axios.create({
 // Инициализация состояния
 const initialState = {
   user: null,
-  token: localStorage.getItem('access_token') || null,
-  refreshToken: localStorage.getItem('refresh_token') || null,
+  token: Cookies.get('access_token') || null,
+  refreshToken: Cookies.get('refresh_token') || null,
   status: 'idle',
   error: null,
 };
@@ -22,8 +23,8 @@ const initialState = {
 export const registerUser = createAsyncThunk('user/register', async (userData, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post('signup/', userData); // Убедитесь, что эндпоинт корректен
-    localStorage.setItem('access_token', response.data.access);
-    localStorage.setItem('refresh_token', response.data.refresh);
+    Cookies.set('access_token', response.data.access,  { expires: 1 });
+    Cookies.set('refresh_token', response.data.refresh,  { expires: 1 });
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response.data);
@@ -34,23 +35,25 @@ export const registerUser = createAsyncThunk('user/register', async (userData, {
 export const loginUser = createAsyncThunk('user/login', async (credentials, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post('token/', credentials);
-    localStorage.setItem('access_token', response.data.access);
-    localStorage.setItem('refresh_token', response.data.refresh);
+    Cookies.set('access_token', response.data.access, { expires: 1 });
+    Cookies.set('refresh_token', response.data.refresh, { expires: 1 });
     return response.data;
   } catch (error) {
-    return rejectWithValue(error.response.data);
+    return rejectWithValue(error.response.data || "Registration failed");
   }
 });
 
 // Обновление токена
 export const refreshToken = createAsyncThunk('user/refreshToken', async (_, { getState, rejectWithValue }) => {
-  const refresh = getState().user.refreshToken;
+  const refresh = Cookies.get('refresh_token');
   try {
     const response = await axiosInstance.post('token/refresh/', { refresh });
-    localStorage.setItem('access_token', response.data.access);
+    Cookies.set('access_token', response.data.access, { expires: 1 });
     return response.data;
   } catch (error) {
-    return rejectWithValue(error.response.data);
+    Cookies.remove('access_token');
+    Cookies.remove('refresh_token');
+    return rejectWithValue(error.response.data || "Failed to refresh token");
   }
 });
 
@@ -63,8 +66,8 @@ const userSlice = createSlice({
       state.user = null;
       state.token = null;
       state.refreshToken = null;
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
+      Cookies.remove('access_token');
+      Cookies.remove('refresh_token');
     },
   },
   extraReducers: (builder) => {
