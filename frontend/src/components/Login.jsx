@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     const result = await dispatch(loginUser(credentials));
     if (result.meta.requestStatus === 'fulfilled') {
-      navigate('/'); // Переход на Home Page
+      navigate('/'); 
     }
   };
 
@@ -25,8 +25,26 @@ const Login = () => {
     <div>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <input name="username" placeholder="Username" onChange={handleChange} required />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+      <div>
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            value={credentials.username}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            value={credentials.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <button type="submit">Login</button>
       </form>
       {status === 'loading' && <p>Loading...</p>}
