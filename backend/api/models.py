@@ -78,3 +78,15 @@ class OrderItem(models.Model):
         verbose_name_plural = "Элементы заказа"
 
 
+class Rating(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    rating = models.IntegerField('Рейтинг') # 1/5
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    date = models.DateTimeField('Дата', auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.rating}"
+
+    class Meta:
+        verbose_name = "Рейтинг"
+        verbose_name_plural = "Рейтинги"
