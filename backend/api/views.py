@@ -43,7 +43,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Product.objects.annotate(
             avg_rating=Avg('rating__rating')
-        )
+        ).prefetch_related('images')
         group_id = self.request.query_params.get('group', None)
         if group_id:
             queryset = queryset.filter(group_id=group_id)
