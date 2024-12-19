@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import axiosInstance from '../api/axiosInstance';
-import { clearUser } from '../features/user/userSlice';
-import { refreshToken } from '../features/user/userSlice';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import axiosInstance from "../api/axiosInstance";
+import { clearUser } from "../features/user/userSlice";
+import { refreshToken } from "../features/user/userSlice";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const Profile = () => {
   // }, [dispatch, token]);
 
   return (
-    <div>
+    <div style={{ minHeight: "100vh" }}>
       <h1>Profile Page</h1>
       <button onClick={() => dispatch(clearUser)}>Logout</button>
     </div>
