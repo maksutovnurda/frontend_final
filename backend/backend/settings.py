@@ -25,10 +25,12 @@ SECRET_KEY = 'django-insecure-r&-qb$pyzazj&1ub#p^&-2-r&8al=4y%n(!3r#4hx9$_aig(=)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+#DEBUG = False
 
+# Limitations
 ALLOWED_HOSTS = ['195.133.146.14', '127.0.0.1']
-# add that hosts to csrf trusted hosts
 CSRF_TRUSTED_ORIGINS = ['http://195.133.146.14:8090']
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
@@ -43,7 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_yasg',
-    'rest_framework_swagger'
+    'rest_framework_swagger',
+    'corsheaders'
 ]
 
 
@@ -56,6 +59,11 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,  # Number of items per page
 }
 
+# ---------- For Swagger
+SWAGGER_SETTINGS = {
+   'USE_SESSION_AUTH': False
+}
+
 
 
 MIDDLEWARE = [
@@ -66,6 +74,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 
@@ -150,6 +159,11 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
+
+# ------------------------------------------------ Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 
 # Default primary key field type

@@ -1,10 +1,12 @@
 from rest_framework import viewsets
 from .models import Category, Group, Product, ProductImage, Order, OrderItem
 from .serializers import CategorySerializer, GroupSerializer, ProductSerializer, ProductImageSerializer, \
-    OrderSerializer, OrderItemSerializer, UserSerializer
+    OrderSerializer, OrderItemSerializer, UserSerializer, SignUpSerializer
 from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework.pagination import PageNumberPagination
+from rest_framework import generics
+from rest_framework.permissions import AllowAny
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -56,3 +58,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
+
+class SignUpView(generics.CreateAPIView):
+    serializer_class = SignUpSerializer
+    permission_classes = [AllowAny]
