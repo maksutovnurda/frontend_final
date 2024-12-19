@@ -7,7 +7,6 @@ from django.conf.urls.static import static
 
 router = DefaultRouter()
 router.register(r'categories', views.CategoryViewSet)
-router.register(r'groups', views.GroupViewSet)
 router.register(r'products', views.ProductViewSet, basename='Product')
 router.register(r'orders', views.OrderViewSet)
 router.register(r'users', views.UserViewSet)
