@@ -9,7 +9,7 @@ const CategoryItem = ({ category }) => {
 
   return (
     <Link
-      to={"catalog/"}
+      to={"/products"}
       onClick={() => saveCategoryID()}
       style={{ textDecoration: "none", color: "black" }}
     >
