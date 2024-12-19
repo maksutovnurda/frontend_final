@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Group, Product, ProductImage, Order, OrderItem
+from .models import Category, Group, Product, ProductImage, Order, OrderItem, Rating
 from django.contrib.auth.models import User
 
 
@@ -17,18 +17,22 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'category']
 
 
+class ProductImageSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField()
+
+    class Meta:
+        model = ProductImage
+        fields = ['image']
+
+
 class ProductSerializer(serializers.ModelSerializer):
     group = GroupSerializer()
+    avg_rating = serializers.FloatField()
+    images = ProductImageSerializer(many=True)
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'sale', 'group', 'active']
-
-
-class ProductImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = ['id', 'product', 'image']
+        fields = ['id', 'name', 'description', 'price', 'sale', 'group', 'active', 'avg_rating', 'images']
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -67,3 +71,9 @@ class SignUpSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+
+
+class RatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = ['id', 'product', 'rating', 'user', 'date']

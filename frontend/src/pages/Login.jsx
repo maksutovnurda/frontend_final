@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../features/user/userSlice';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../features/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [credentials, setCredentials] = useState({ username: "", password: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { status, error } = useSelector((state) => state.user);
@@ -16,25 +16,47 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await dispatch(loginUser(credentials));
-    console.log(result)
-    if (result.meta.requestStatus === 'fulfilled') {
-      navigate('/profile'); // Переход на Home Page
-    }
-    else {
-      console.log('Error')
+    if (result.meta.requestStatus === "fulfilled") {
+      navigate("/"); // Redirect to homepage on successful login
     }
   };
 
   return (
-    <div>
+    <div className="form-container">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <input name="username" placeholder="Username" onChange={handleChange} required />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-        <button type="submit">Login</button>
+        <div>
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            placeholder="Enter your username"
+            value={credentials.username}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            value={credentials.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit" disabled={status === "loading"}>
+          Login
+        </button>
       </form>
-      {status === 'loading' && <p>Loading...</p>}
-      {status === 'failed' && <p style={{ color: 'red' }}>Error, please try again!</p>}
+      {status === "loading" && <p>Loading...</p>}
+      {status === "failed" && (
+        <p style={{ color: "red" }}>
+          {error?.detail || "Invalid credentials, please try again!"}
+        </p>
+      )}
     </div>
   );
 };
