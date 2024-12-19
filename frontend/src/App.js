@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Home from "./pages/Home";
 import Error from "./pages/Error";
+
+import Products from "./pages/Products";
 import ProductDetails from "./components/ProductDetails";
 
 function App() {
@@ -17,6 +19,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/error" element={<Error />} />
+        <Route path="/products" element={<Products />} />
         <Route path="/*" element={<Navigate to="/error" />} />
         <Route path="/products/:id" element={<ProductDetails />} />
       </Routes>
