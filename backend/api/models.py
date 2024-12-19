@@ -13,24 +13,12 @@ class Category(models.Model):
         verbose_name_plural = "Категории"
 
 
-class Group(models.Model):
-    name = models.CharField('Название', max_length=255)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.category.name} - {self.name}"
-
-    class Meta:
-        verbose_name = "Группа"
-        verbose_name_plural = "Группы"
-
-
 class Product(models.Model):
     name = models.CharField('Название', max_length=255)
     description = models.TextField('Описание')
     price = models.IntegerField('Цена')
     sale = models.IntegerField('Скидка', default=0)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     active = models.BooleanField('Активный', default=True)
 
     def __str__(self):
