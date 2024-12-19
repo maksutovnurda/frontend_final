@@ -16,8 +16,12 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await dispatch(loginUser(credentials));
+    console.log(result)
     if (result.meta.requestStatus === 'fulfilled') {
-      navigate('/'); 
+      navigate('/profile'); // Переход на Home Page
+    }
+    else {
+      console.log('Error')
     }
   };
 
@@ -25,30 +29,12 @@ const Login = () => {
     <div>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-      <div>
-          <label>Username</label>
-          <input
-            type="text"
-            name="username"
-            value={credentials.username}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={credentials.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <input name="username" placeholder="Username" onChange={handleChange} required />
+        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
         <button type="submit">Login</button>
       </form>
       {status === 'loading' && <p>Loading...</p>}
-      {status === 'failed' && <p style={{ color: 'red' }}>{error}</p>}
+      {status === 'failed' && <p style={{ color: 'red' }}>Error, please try again!</p>}
     </div>
   );
 };

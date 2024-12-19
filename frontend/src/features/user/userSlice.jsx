@@ -57,17 +57,27 @@ export const refreshToken = createAsyncThunk('user/refreshToken', async (_, { ge
   }
 });
 
+// Логика выхода из аккаунта
+export const logout = createAsyncThunk('user/logout', async (_, { dispatch }) => {
+  // Удаляем токены из Cookies
+  Cookies.remove('access_token');
+  Cookies.remove('refresh_token');
+  
+  // Очищаем состояние пользователя через Redux
+  dispatch(userSlice.actions.clearUser());
+});
+
 // Создаем userSlice
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    logout: (state) => {
+    clearUser: (state) => {
       state.user = null;
       state.token = null;
       state.refreshToken = null;
-      Cookies.remove('access_token');
-      Cookies.remove('refresh_token');
+      state.status = 'idle';
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
@@ -87,6 +97,17 @@ const userSlice = createSlice({
       .addCase(refreshToken.fulfilled, (state, action) => {
         state.token = action.payload.access;
       })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+        state.token = null;
+        state.refreshToken = null;
+        state.status = 'idle';
+        state.error = null;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
       .addMatcher(
         (action) => action.type.endsWith('/rejected'),
         (state, action) => {
@@ -103,5 +124,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { clearUser } = userSlice.actions;
 export default userSlice.reducer;
