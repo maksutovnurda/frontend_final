@@ -18,7 +18,7 @@ const Home = () => {
 
   return (
     <div style={{ minHeight: "100vh" }}>
-      <h1 className="welcomeText">Welcome to our Online Store</h1>
+      <h1 className="welcomeText">Internet Store Yelaman Kotek</h1>
       <div className="categories">
         {isLoading ? <Loader /> : <CategoriesList categories={categories} />}
       </div>

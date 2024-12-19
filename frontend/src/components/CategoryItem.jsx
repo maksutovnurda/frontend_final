@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const CategoryItem = ({ category }) => {
+  const [click, setClick] = useState(false);
+
   return (
     <div className="categoryItem">
       <img
