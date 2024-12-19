@@ -163,7 +163,6 @@
     }
 }
 
-/* Add smooth page load animation */
 @keyframes fadeIn {
     from {
         opacity: 0;

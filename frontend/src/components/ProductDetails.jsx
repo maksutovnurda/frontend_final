@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../api/axiosInstance";
 import { FaStar } from "react-icons/fa";
+import { useParams } from "react-router-dom";
 import "../styles/ProductDetails.css";
+import "../styles/ProductDetailsLoader.css";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState({});
-  const [avgRating, setAvgRating] = useState(0);
+  const [avgRating, setAvgRating] = useState(0.0);
   const [isLoading, setIsLoading] = useState(true);
 
-  const id = 1;
+  const { id } = useParams();
 
   const fetchProduct = async () => {
     try {
       const response = await axiosInstance.get(`products/${id}/`);
       setProduct(response.data);
-      setAvgRating(response.data.avg_rating);
+      if (response.data.avg_rating !== null) {
+        setAvgRating(response.data.avg_rating);
+      }
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching product:", error.message);
@@ -27,7 +31,35 @@ const ProductDetails = () => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="product-details-container">
+        <div className="product-details loading">
+          <div className="product-image skeleton">
+            <div className="shimmer"></div>
+          </div>
+          <div className="product-info">
+            <div className="product-title skeleton">
+              <div className="shimmer"></div>
+            </div>
+            <div className="product-rating skeleton">
+              <div className="shimmer"></div>
+            </div>
+            <div className="product-description">
+              {[...Array(4)].map((_, index) => (
+                <div key={index} className="description-point skeleton">
+                  <div className="shimmer"></div>
+                </div>
+              ))}
+            </div>
+            <div className="product-actions">
+              <div className="add-to-cart skeleton">
+                <div className="shimmer"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
