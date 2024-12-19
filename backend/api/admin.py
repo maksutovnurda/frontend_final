@@ -1,9 +1,10 @@
 from django.contrib import admin
 
-from .models import Category, Group, Product, Order, ProductImage, OrderItem
+from .models import Category, Group, Product, Order, ProductImage, OrderItem, Rating
 
 admin.site.register(Order)
 admin.site.register(OrderItem)
+admin.site.register(Rating)
 
 @admin.register(Group)
 class SectionAdmin(admin.ModelAdmin):
