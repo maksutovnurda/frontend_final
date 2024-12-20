@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaStar } from "react-icons/fa";
 import axiosInstance from "../api/axiosInstance";
 import Cookies from "js-cookie";
 import Loader from "../components/UI/Loader";
-import ProductCardSkeleton from '../components/UI/ProductCardSkeleton';
+import notfound from "../assets/images/notfound.jpg";
 import "../styles/Products.css";
 
 function Products() {
@@ -58,74 +57,72 @@ function Products() {
 
   return (
     <div className="products-page">
-      <div className="products-header">
-        <h1>Our Products</h1>
-        <div className="filters">
-          <input
-            type="text"
-            className="search-input"
-            name="query"
-            placeholder="Search products..."
-            value={filter.query}
-            onChange={handleFilterChange}
-          />
-          <select
-            className="sort-select"
-            name="sort"
-            value={filter.sort}
-            onChange={handleFilterChange}
-          >
-            <option value="">Sort by</option>
-            <option value="price">Price: Low to High</option>
-            <option value="name">Name: A to Z</option>
-          </select>
-        </div>
+      <h1>Products</h1>
+
+      {/* Filters */}
+      <div className="filters">
+        <input
+          type="text"
+          name="query"
+          placeholder="Search products..."
+          value={filter.query}
+          onChange={handleFilterChange}
+        />
+        <select name="sort" value={filter.sort} onChange={handleFilterChange}>
+          <option value="">Sort by</option>
+          <option value="price">Price</option>
+          <option value="name">Name</option>
+        </select>
+        <button onClick={handleShowWishlist}>
+          {showWishlist ? "Back to Products" : "View Wishlist"}
+        </button>
       </div>
 
+      {/* Conditional Rendering */}
       {isLoading ? (
-        <div className="product-grid">
-          {[...Array(9)].map((_, index) => (
-            <ProductCardSkeleton key={index} />
-          ))}
+        <div className="loader-container">
+          <Loader />
         </div>
       ) : filteredProducts.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "40px", color: "#666" }}>
-          No products found
-        </div>
+        <div className="no-products">No available products</div>
       ) : (
-        <div className="product-grid">
+        <div className="product-list">
           {filteredProducts.map((product) => (
-            <div key={product.id} className="product-card">
-              <div 
-                className="product-image"
-                onClick={() => navigate(`/products/${product.id}`)}
-                style={{ cursor: 'pointer' }}
+            <div
+              key={product.id}
+              className="product-item"
+              onClick={() => navigate(`/products/${product.id}`)}
+            >
+              {/* Product Image */}
+              <img
+                src={
+                  product.images.length > 0 ? product.images[0].image : notfound
+                }
+                alt={product.name}
+              />
+
+              {/* Product Name */}
+              <h3>{product.name}</h3>
+
+              {/* Product Price */}
+              <p>{product.price}₸</p>
+
+              {/* Wishlist Button */}
+              <button
+                className={
+                  wishlist.some((item) => item.id === product.id)
+                    ? "remove-from-wishlist"
+                    : "add-to-wishlist"
+                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleWishlist(product);
+                }}
               >
-                <img
-                  src={product.images?.[0]?.image || "placeholder.jpg"}
-                  alt={product.name}
-                  onError={(e) => {
-                    e.target.src = "https://via.placeholder.com/400";
-                  }}
-                />
-              </div>
-              <div className="product-info">
-                <h3 
-                  className="product-name"
-                  onClick={() => navigate(`/products/${product.id}`)}
-                >
-                  {product.name}
-                </h3>
-                <div className="product-price">
-                  <span className="price-main">{product.price.toFixed(0)} ₸</span>
-                </div>
-                <div className="product-rating">
-                  <FaStar className="rating-star" />
-                  <span>{product.avg_rating?.toFixed(1) || "0.0"}</span>
-                  <span>•</span>
-                  <span className="quantity-badge">1 шт</span>
-                </div>
-              </div>
+                {wishlist.some((item) => item.id === product.id)
+                  ? "Remove from Wishlist"
+                  : "Add to Wishlist"}
+              </button>
             </div>
           ))}
         </div>
