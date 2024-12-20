@@ -76,27 +76,42 @@ const userSlice = createSlice({
       state.user = null;
       state.token = null;
       state.refreshToken = null;
-      state.status = 'idle';
-      state.error = null;
+      Cookies.remove('access_token');
+      Cookies.remove('refresh_token');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
     },
   },
   extraReducers: (builder) => {
     builder
+    //register 
       .addCase(registerUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.token = action.payload.access;
         state.refreshToken = action.payload.refresh;
         state.user = action.payload.username;
       })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      }
+      )
+      //login
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.token = action.payload.access;
         state.refreshToken = action.payload.refresh;
         state.user = action.payload.username;
       })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      //refresh token
       .addCase(refreshToken.fulfilled, (state, action) => {
         state.token = action.payload.access;
       })
+      //logout
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.token = null;
@@ -104,10 +119,8 @@ const userSlice = createSlice({
         state.status = 'idle';
         state.error = null;
       })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload;
-      })
+
+      // Обработка ошибок
       .addMatcher(
         (action) => action.type.endsWith('/rejected'),
         (state, action) => {

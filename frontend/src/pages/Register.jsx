@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../features/user/userSlice';
+import { registerUser, loginUser } from '../features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
@@ -10,35 +10,32 @@ const Register = () => {
   const navigate = useNavigate();
   const { status, error } = useSelector((state) => state.user);
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
     if (e.target.name === 'email') {
-      if (!validateEmail(e.target.value)) {
-        setEmailError('Invalid email format');
-      } else {
-        setEmailError('');
-      }
+      setEmailError(validateEmail(e.target.value) ? '' : 'Invalid email format');
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateEmail(formData.email)) {
+    if (emailError || !validateEmail(formData.email)) {
       setEmailError('Invalid email format');
       return;
     }
-    setEmailError('');
 
     const result = await dispatch(registerUser(formData));
     if (result.meta.requestStatus === 'fulfilled') {
-      navigate('/'); // Redirect to the homepage on successful registration
+      const loginResult = await dispatch(
+        loginUser({ username: formData.username, password: formData.password })
+      );
+      if (loginResult.meta.requestStatus === 'fulfilled') {
+        navigate('/home'); // Redirect to homepage
+      }
     }
   };
 
@@ -55,7 +52,13 @@ const Register = () => {
             onChange={handleChange}
             required
           />
-          {error?.username && <p style={{ color: 'red' }}>{error.username[0]}</p>}
+          {error?.username && (
+            <p style={{ color: 'red' }}>
+              {error.username[0].includes('already exists')
+                ? 'This username is already in use. Please choose another.'
+                : error.username[0]}
+            </p>
+          )}
         </div>
         <div>
           <label>Email</label>
@@ -91,9 +94,7 @@ const Register = () => {
       </form>
       {status === 'loading' && <p>Loading...</p>}
       {status === 'failed' && (
-        <p style={{ color: 'red' }}>
-          Registration failed. {error?.non_field_errors || ''}
-        </p>
+        <p style={{ color: 'red' }}>Failed to register. {error?.non_field_errors?.[0]}</p>
       )}
     </div>
   );
