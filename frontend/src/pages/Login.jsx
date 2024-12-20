@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/user/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import "../styles/Login.css";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ username: "", password: "" });
@@ -17,7 +18,7 @@ const Login = () => {
     e.preventDefault();
     const result = await dispatch(loginUser(credentials));
     if (result.meta.requestStatus === "fulfilled") {
-      navigate("/home"); // Redirect to homepage on successful login
+      navigate("/"); // Redirect to homepage on successful login
     }
   };
 
@@ -26,7 +27,6 @@ const Login = () => {
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Username</label>
           <input
             type="text"
             name="username"
@@ -37,7 +37,6 @@ const Login = () => {
           />
         </div>
         <div>
-          <label>Password</label>
           <input
             type="password"
             name="password"
@@ -57,6 +56,9 @@ const Login = () => {
           {error?.detail || "Invalid credentials, please try again!"}
         </p>
       )}
+       <div className="forgot-password">
+        <Link to="/password-reset">Forgot Password?</Link>
+      </div>
     </div>
   );
 };
