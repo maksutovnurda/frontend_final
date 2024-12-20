@@ -11,9 +11,8 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Home from "./pages/Home";
 import Error from "./pages/Error";
-
 import Products from "./pages/Products";
-import ProductDetails from "./components/ProductDetails";
+import ProductDetails from './components/ProductDetails/ProductDetails';
 
 function App() {
   return (

@@ -1,0 +1,27 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon files
+Icon?
+._*g
+
+# Thumbnails
+Thumbs.db
+
+# Other macOS-specific files
+*.swp
+
+# PyCharm project files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Virtual environment (if applicable)
+venv/
+
+
+*.sqlite3
+*.pyc

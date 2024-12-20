@@ -1,4 +1,5 @@
-import React, { use, useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "../api/axiosInstance";
 import CategoriesList from "../components/CategoriesList";
 import Loader from "../components/UI/Loader";
