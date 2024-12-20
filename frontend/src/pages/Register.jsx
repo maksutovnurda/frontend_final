@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, loginUser } from '../features/user/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import '../styles/Register.css';
 
 const Register = () => {
@@ -100,6 +100,10 @@ const Register = () => {
           Failed to register. {error?.non_field_errors?.[0]}
         </div>
       )}
+      <div className="login-link">
+        <p>Already have an account?</p>
+        <Link to="/login">Login</Link>
+      </div>
     </div>
   );
 };

@@ -64,6 +64,10 @@ const Login = () => {
         <div className="forgot-password">
           <Link to="/password-reset">Forgot Password?</Link>
         </div>
+        <div className="register-link">
+        <p>Don't have an account?</p>
+        <Link to="/register">Register</Link>
+      </div>
       </div>
     </div>
   );

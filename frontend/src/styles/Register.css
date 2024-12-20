@@ -92,3 +92,27 @@
     text-align: center; /* Center-align text */
   }
   
+  /* Login Link */
+.login-link {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.login-link p {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.login-link a {
+  color: var(--mainColor);
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.login-link a:hover {
+  color: rgb(34, 90, 130);
+  text-shadow: 0 0 5px rgba(34, 90, 130, 0.7);
+}
