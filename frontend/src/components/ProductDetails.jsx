@@ -88,6 +88,9 @@ const ProductDetails = () => {
             ))}
             <span className="rating-value">({avgRating.toFixed(1)})</span>
           </div>
+          <div className="product-price">
+            {product.price ? `${product.price.toFixed(2)} ₸` : "0.00 ₸"}
+          </div>
           <div className="product-description">
             {(product.description || "Product description goes here").split('-').map((point, index) => (
               point.trim() && (
