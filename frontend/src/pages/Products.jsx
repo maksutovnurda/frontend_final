@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaStar } from "react-icons/fa";
 import axiosInstance from "../api/axiosInstance";
 import Cookies from "js-cookie";
 import Loader from "../components/UI/Loader";
+import "../styles/Products.css";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -54,121 +56,73 @@ function Products() {
   }, [filter, products]);
 
   return (
-    <div
-      className="products-page"
-      style={{ padding: "20px", minHeight: "100vh" }}
-    >
-      <h1 style={{ marginBottom: 20 }}>Products</h1>
-
-      {/* Filters */}
-      <div className="filters" style={{ marginBottom: "20px" }}>
-        <input
-          type="text"
-          name="query"
-          placeholder="Search products..."
-          value={filter.query}
-          onChange={handleFilterChange}
-          style={{
-            padding: "10px",
-            marginRight: "10px",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-            minWidth: "400px",
-          }}
-        />
-        <select
-          name="sort"
-          value={filter.sort}
-          onChange={handleFilterChange}
-          style={{
-            padding: "10px",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-          }}
-        >
-          <option value="">Sort by</option>
-          <option value="price">Price</option>
-          <option value="name">Name</option>
-        </select>
+    <div className="products-page">
+      <div className="products-header">
+        <h1>Our Products</h1>
+        <div className="filters">
+          <input
+            type="text"
+            className="search-input"
+            name="query"
+            placeholder="Search products..."
+            value={filter.query}
+            onChange={handleFilterChange}
+          />
+          <select
+            className="sort-select"
+            name="sort"
+            value={filter.sort}
+            onChange={handleFilterChange}
+          >
+            <option value="">Sort by</option>
+            <option value="price">Price: Low to High</option>
+            <option value="name">Name: A to Z</option>
+          </select>
+        </div>
       </div>
 
-      {/* Conditional Rendering */}
       {isLoading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "70vh",
-          }}
-        >
+        <div style={{ display: "flex", justifyContent: "center", padding: "40px" }}>
           <Loader />
         </div>
       ) : filteredProducts.length === 0 ? (
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: "20px",
-            color: "#555",
-            fontSize: "18px",
-          }}
-        >
-          No available products
+        <div style={{ textAlign: "center", padding: "40px", color: "#666" }}>
+          No products found
         </div>
       ) : (
-        <div
-          className="product-list"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "20px",
-          }}
-        >
+        <div className="product-grid">
           {filteredProducts.map((product) => (
-            <div
-              key={product.id}
-              className="product-item"
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "10px",
-                padding: "10px",
-                textAlign: "center",
-              }}
-            >
-              {/* Check if there are images and display the first image */}
-              <img
-                src={
-                  product.images.length > 0
-                    ? product.images[0].image
-                    : "placeholder.jpg"
-                }
-                alt={product.name}
-                style={{
-                  width: "100%",
-                  height: "150px",
-                  objectFit: "cover",
-                  borderRadius: "10px 10px 0 0",
-                }}
-              />
-              <h3 style={{ fontSize: "18px", margin: "10px 0" }}>
-                {product.name}
-              </h3>
-              <p style={{ color: "#888", marginBottom: "10px" }}>
-                ${product.price}
-              </p>
-              <button
-                style={{
-                  padding: "10px 20px",
-                  backgroundColor: "rgb(44, 109, 158)",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
+            <div key={product.id} className="product-card">
+              <div 
+                className="product-image"
                 onClick={() => navigate(`/products/${product.id}`)}
+                style={{ cursor: 'pointer' }}
               >
-                View Details
-              </button>
+                <img
+                  src={product.images?.[0]?.image || "placeholder.jpg"}
+                  alt={product.name}
+                  onError={(e) => {
+                    e.target.src = "https://via.placeholder.com/400";
+                  }}
+                />
+              </div>
+              <div className="product-info">
+                <h3 
+                  className="product-name"
+                  onClick={() => navigate(`/products/${product.id}`)}
+                >
+                  {product.name}
+                </h3>
+                <div className="product-price">
+                  <span className="price-main">{product.price.toFixed(0)} ₸</span>
+                </div>
+                <div className="product-rating">
+                  <FaStar className="rating-star" />
+                  <span>{product.avg_rating?.toFixed(1) || "0.0"}</span>
+                  <span>•</span>
+                  <span className="quantity-badge">1 шт</span>
+                </div>
+              </div>
             </div>
           ))}
         </div>
