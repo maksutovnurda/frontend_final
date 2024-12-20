@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import axiosInstance from "../api/axiosInstance";
 import Cookies from "js-cookie";
-import Loader from "../components/UI/Loader";
-import ProductCardSkeleton from '../components/UI/ProductCardSkeleton';
+// import Loader from "../components/UI/Loader";
+import ProductCardSkeleton from "../components/UI/ProductCardSkeleton";
 import "../styles/Products.css";
 
 function Products() {
@@ -96,10 +96,10 @@ function Products() {
         <div className="product-grid">
           {filteredProducts.map((product) => (
             <div key={product.id} className="product-card">
-              <div 
+              <div
                 className="product-image"
                 onClick={() => navigate(`/products/${product.id}`)}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
               >
                 <img
                   src={product.images?.[0]?.image || "placeholder.jpg"}
@@ -110,14 +110,16 @@ function Products() {
                 />
               </div>
               <div className="product-info">
-                <h3 
+                <h3
                   className="product-name"
                   onClick={() => navigate(`/products/${product.id}`)}
                 >
                   {product.name}
                 </h3>
                 <div className="product-price">
-                  <span className="price-main">{product.price.toFixed(0)} ₸</span>
+                  <span className="price-main">
+                    {product.price.toFixed(0)} ₸
+                  </span>
                 </div>
                 <div className="product-rating">
                   <FaStar className="rating-star" />
