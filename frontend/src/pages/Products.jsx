@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
+import Cookies from "js-cookie";
+import Loader from "../components/UI/Loader";
 
 function Products() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState({ sort: "", query: "" });
+  const navigate = useNavigate();
 
   // Fetch products
   const fetchProducts = async () => {
-    const response = await axiosInstance.get("products/");
+    const categoryID = Cookies.get("categoryID");
+    const response = await axiosInstance.get(
+      `products/?category=${categoryID}`
+    );
     setProducts(response.data.results);
-    setFilteredProducts(response.data.results); // Initialize filtered products
+    setFilteredProducts(response.data.results);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -45,8 +54,11 @@ function Products() {
   }, [filter, products]);
 
   return (
-    <div className="products-page" style={{ padding: "20px" }}>
-      <h1>Products</h1>
+    <div
+      className="products-page"
+      style={{ padding: "20px", minHeight: "100vh" }}
+    >
+      <h1 style={{ marginBottom: 20 }}>Products</h1>
 
       {/* Filters */}
       <div className="filters" style={{ marginBottom: "20px" }}>
@@ -61,6 +73,7 @@ function Products() {
             marginRight: "10px",
             border: "1px solid #ccc",
             borderRadius: "5px",
+            minWidth: "400px",
           }}
         />
         <select
@@ -79,63 +92,87 @@ function Products() {
         </select>
       </div>
 
-      {/* Product List */}
-      <div
-        className="product-list"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "20px",
-        }}
-      >
-        {filteredProducts.map((product) => (
-          <div
-            key={product.id}
-            className="product-item"
-            style={{
-              border: "1px solid #ddd",
-              borderRadius: "10px",
-              padding: "10px",
-              textAlign: "center",
-            }}
-          >
-            {/* Check if there are images and display the first image */}
-            <img
-              src={
-                product.images.length > 0
-                  ? product.images[0].image
-                  : "placeholder.jpg"
-              }
-              alt={product.name}
+      {/* Conditional Rendering */}
+      {isLoading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "70vh",
+          }}
+        >
+          <Loader />
+        </div>
+      ) : filteredProducts.length === 0 ? (
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: "20px",
+            color: "#555",
+            fontSize: "18px",
+          }}
+        >
+          No available products
+        </div>
+      ) : (
+        <div
+          className="product-list"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "20px",
+          }}
+        >
+          {filteredProducts.map((product) => (
+            <div
+              key={product.id}
+              className="product-item"
               style={{
-                width: "100%",
-                height: "150px",
-                objectFit: "cover",
-                borderRadius: "10px 10px 0 0",
+                border: "1px solid #ddd",
+                borderRadius: "10px",
+                padding: "10px",
+                textAlign: "center",
               }}
-            />
-            <h3 style={{ fontSize: "18px", margin: "10px 0" }}>
-              {product.name}
-            </h3>
-            <p style={{ color: "#888", marginBottom: "10px" }}>
-              ${product.price}
-            </p>
-            <button
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "#007BFF",
-                color: "#fff",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-              onClick={() => alert(`Product ID: ${product.id}`)}
             >
-              View Details
-            </button>
-          </div>
-        ))}
-      </div>
+              {/* Check if there are images and display the first image */}
+              <img
+                src={
+                  product.images.length > 0
+                    ? product.images[0].image
+                    : "placeholder.jpg"
+                }
+                alt={product.name}
+                style={{
+                  width: "100%",
+                  height: "150px",
+                  objectFit: "cover",
+                  borderRadius: "10px 10px 0 0",
+                }}
+              />
+              <h3 style={{ fontSize: "18px", margin: "10px 0" }}>
+                {product.name}
+              </h3>
+              <p style={{ color: "#888", marginBottom: "10px" }}>
+                ${product.price}
+              </p>
+              <button
+                style={{
+                  padding: "10px 20px",
+                  backgroundColor: "rgb(44, 109, 158)",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+                onClick={() => navigate(`/products/${product.id}`)}
+              >
+                View Details
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
