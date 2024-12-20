@@ -77,7 +77,9 @@ const Profile = () => {
       );
       setErrorMessage("");
     } catch (error) {
-      setErrorMessage("Failed to send password reset request. Please try again.");
+      setErrorMessage(
+        "Failed to send password reset request. Please try again."
+      );
       setStatusMessage("");
       console.error("Error sending password reset request:", error);
     }
@@ -86,6 +88,7 @@ const Profile = () => {
   const handleLogout = () => {
     dispatch(clearUser());
     navigate("/");
+    window.location.reload();
   };
 
   return (
