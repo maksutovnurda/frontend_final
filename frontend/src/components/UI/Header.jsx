@@ -29,7 +29,9 @@ const Header = () => {
           Shop
         </Link>
         {token ? (
-          <MdAccountCircle size={30} />
+          <Link to={"/profile"}>
+            <MdAccountCircle size={30} />
+          </Link>
         ) : (
           <>
             <button className="btn btn-primary">
