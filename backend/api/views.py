@@ -1,5 +1,5 @@
 from django.db.models import Avg
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from .models import Category, Product, ProductImage, Order, OrderItem, Rating
 from .serializers import CategorySerializer, ProductSerializer, ProductImageSerializer, \
     OrderSerializer, OrderItemSerializer, UserSerializer, SignUpSerializer, RatingSerializer
@@ -43,11 +43,26 @@ class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
+class IsAdminOrSelf(permissions.BasePermission):
+    """
+    Custom permission to only allow users to access their own profile,
+    unless they are admins.
+    """
+    def has_object_permission(self, request, view, obj):
+        # Allow access if the user is an admin or the profile belongs to them
+        return request.user.is_staff or obj == request.user
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated, IsAdminOrSelf]
 
+    def get_queryset(self):
+        # Admins see all users, regular users see only their own profile
+        if self.request.user.is_staff:
+            return User.objects.all()
+        return User.objects.filter(id=self.request.user.id)
 
 class SignUpView(generics.CreateAPIView):
     serializer_class = SignUpSerializer
