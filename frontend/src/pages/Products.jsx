@@ -135,8 +135,16 @@ function Products() {
               {/* Product Name */}
               <h3>{product.name}</h3>
 
-              {/* Product Price */}
-              <p>{product.price}₸</p>
+              {/* Price and Rating Container */}
+              <div className="price-rating-container">
+                <p>{product.price}₸</p>
+                <div className="rating-container">
+                  <span className="rating-star">★</span>
+                  <span className="rating-text">
+                    {product.avg_rating ? product.avg_rating.toFixed(1) : '0.0'}
+                  </span>
+                </div>
+              </div>
 
               {/* Wishlist Button */}
               <button

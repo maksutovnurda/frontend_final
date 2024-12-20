@@ -85,7 +85,32 @@
 
 .product-item p {
   color: #888;
+  margin-bottom: 0;
+}
+
+.price-rating-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
   margin-bottom: 10px;
+}
+
+.rating-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 0;
+}
+
+.rating-star {
+  color: #ffd700;
+  font-size: 16px;
+}
+
+.rating-text {
+  color: #666;
+  font-size: 14px;
 }
 
 .add-to-wishlist,
