@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
 import axiosInstance from "../../api/axiosInstance";
 import ProductRating from "./ProductRating";
 import ProductSkeleton from "./ProductSkeleton";
@@ -12,6 +13,8 @@ const ProductDetails = () => {
   const [ratingCount, setRatingCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -60,6 +63,16 @@ const ProductDetails = () => {
     });
   };
 
+  const handleAddToCart = () => {
+    try {
+      addToCart(product);
+      console.log('Product added to cart:', product); // Add this for debugging
+      navigate('/shop', { replace: true });
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
+  };
+
   return (
     <div className="product-details-container">
       <div className="product-details">
@@ -82,7 +95,9 @@ const ProductDetails = () => {
             {renderDescription(product.description)}
           </div>
           <div className="product-actions">
-            <button className="add-to-cart">Add to Cart</button>
+            <button className="add-to-cart" onClick={handleAddToCart}>
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>

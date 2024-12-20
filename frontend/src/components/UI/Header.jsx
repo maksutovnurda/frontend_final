@@ -3,10 +3,14 @@ import { useState } from "react";
 import "../../styles/Header.css";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
-import { MdAccountCircle } from "react-icons/md";
+import { MdAccountCircle, MdShoppingCart } from "react-icons/md";
+import { useCart } from "../../context/CartContext";
 
 const Header = () => {
   const token = Cookies.get("access_token");
+  const { cart } = useCart();
+
+  const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <header className="store-header">
@@ -25,8 +29,15 @@ const Header = () => {
         >
           Products
         </Link>
-        <Link style={{ textDecoration: "none", color: "white" }} to={"/shop"}>
-          Shop
+        <Link 
+          style={{ textDecoration: "none", color: "white" }} 
+          to={"/shop"}
+          className="cart-link"
+        >
+          <MdShoppingCart size={24} />
+          {cartItemsCount > 0 && (
+            <span className="cart-count">{cartItemsCount}</span>
+          )}
         </Link>
         {token ? (
           <Link to={"/profile"}>
