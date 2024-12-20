@@ -31,17 +31,17 @@ const Footer = () => {
           <h4 style={styles.heading}>Follow Us</h4>
           <ul style={styles.list}>
             <li>
-              <a href="#" style={styles.link}>
+              <a href="/" style={styles.link}>
                 Instagram
               </a>
             </li>
             <li>
-              <a href="#" style={styles.link}>
+              <a href="/" style={styles.link}>
                 Facebook
               </a>
             </li>
             <li>
-              <a href="#" style={styles.link}>
+              <a href="/" style={styles.link}>
                 TikTok
               </a>
             </li>
@@ -53,11 +53,11 @@ const Footer = () => {
           © 2024 <strong>Yela.shop</strong>. All rights reserved.
         </p>
         <p>
-          <a href="#" style={styles.link}>
+          <a href="/" style={styles.link}>
             Privacy Policy
           </a>{" "}
           |{" "}
-          <a href="#" style={styles.link}>
+          <a href="/" style={styles.link}>
             Terms of Service
           </a>
         </p>
