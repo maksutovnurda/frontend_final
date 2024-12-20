@@ -1,6 +1,7 @@
 import React from "react";
 import "../../styles/Header.css";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Header = () => {
   return (
@@ -12,16 +13,16 @@ const Header = () => {
       </div>
       <nav className="nav-links">
         <Link style={{ textDecoration: "none", color: "white" }} to={"/"}>
-          <a>Home</a>
+          Home
         </Link>
         <Link
           style={{ textDecoration: "none", color: "white" }}
           to={"/products"}
         >
-          <a>Products</a>
+          Products
         </Link>
         <Link style={{ textDecoration: "none", color: "white" }} to={"/shop"}>
-          <a>Shop</a>
+          Shop
         </Link>
         <a href="#contact">Contact</a>
       </nav>
