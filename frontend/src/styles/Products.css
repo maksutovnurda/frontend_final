@@ -135,6 +135,59 @@
   font-size: 0.9rem;
 }
 
+/* Skeleton Loader Styles */
+.skeleton {
+  background: #f0f0f0;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 200px;
+  background: #eee;
+}
+
+.skeleton-text-long {
+  height: 20px;
+  background: #eee;
+  margin: 10px 0;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.skeleton-text-short {
+  height: 20px;
+  background: #eee;
+  margin: 10px 0;
+  border-radius: 4px;
+  width: 60%;
+}
+
+.shimmer-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  animation: loading 2.5s infinite;
+}
+
+.shimmer {
+  width: 50%;
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  transform: skewX(-20deg);
+  box-shadow: 0 0 30px 30px rgba(255,255,255,0.2);
+}
+
+@keyframes loading {
+  0% { transform: translateX(-150%); }
+  50% { transform: translateX(-60%); }
+  100% { transform: translateX(150%); }
+}
+
 @media (max-width: 1200px) {
   .product-grid {
     grid-template-columns: repeat(4, 1fr);

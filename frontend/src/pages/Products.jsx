@@ -4,6 +4,7 @@ import { FaStar } from "react-icons/fa";
 import axiosInstance from "../api/axiosInstance";
 import Cookies from "js-cookie";
 import Loader from "../components/UI/Loader";
+import ProductCardSkeleton from '../components/UI/ProductCardSkeleton';
 import "../styles/Products.css";
 
 function Products() {
@@ -82,8 +83,10 @@ function Products() {
       </div>
 
       {isLoading ? (
-        <div style={{ display: "flex", justifyContent: "center", padding: "40px" }}>
-          <Loader />
+        <div className="product-grid">
+          {[...Array(9)].map((_, index) => (
+            <ProductCardSkeleton key={index} />
+          ))}
         </div>
       ) : filteredProducts.length === 0 ? (
         <div style={{ textAlign: "center", padding: "40px", color: "#666" }}>
