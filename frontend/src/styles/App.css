@@ -6,7 +6,7 @@
 }
 
 :root {
-  --mainColor: rgb(44, 109, 158);
+  --mainColor: #038aff;
 }
 
 #root {
@@ -17,16 +17,6 @@
 
 .App {
   height: 100vh;
-}
-
-.header {
-  width: 100%;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--mainColor);
-  color: white;
 }
 
 .footer {

@@ -1,0 +1,98 @@
+.store-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 15rem;
+  width: 100%;
+  color: white;
+  background-color: #038aff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.store-header .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  cursor: pointer;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+  font-weight: 400;
+}
+
+.nav-links :hover {
+  color: #f9690e;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.product-input {
+  flex: 1;
+  padding: 12px 10px;
+  width: 100%;
+  max-width: 600px;
+  border: 2px solid #eef2f6;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.product-input:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #f9690e;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #f9690e;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: white;
+  border: 1px solid #f9690e;
+}
+
+.btn-secondary:hover {
+  background-color: #f9690e;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .header-buttons {
+    flex-direction: column;
+  }
+}
