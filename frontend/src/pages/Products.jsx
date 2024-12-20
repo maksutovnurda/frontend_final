@@ -11,11 +11,16 @@ function Products() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState({ sort: "", query: "" });
+  const [wishlist, setWishlist] = useState(
+    JSON.parse(localStorage.getItem("wishlist")) || []
+  );
+  const [showWishlist, setShowWishlist] = useState(false);
+
   const navigate = useNavigate();
+  const categoryID = Cookies.get("categoryID");
 
   // Fetch products
   const fetchProducts = async () => {
-    const categoryID = Cookies.get("categoryID");
     const response = await axiosInstance.get(
       `products/?category=${categoryID}`
     );
@@ -54,6 +59,32 @@ function Products() {
 
     setFilteredProducts(updatedProducts);
   }, [filter, products]);
+
+  // Add/Remove product from wishlist
+  const toggleWishlist = (product) => {
+    let updatedWishlist;
+
+    if (wishlist.some((item) => item.id === product.id)) {
+      updatedWishlist = wishlist.filter((item) => item.id !== product.id);
+    } else {
+      updatedWishlist = [...wishlist, product];
+    }
+
+    setWishlist(updatedWishlist);
+    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+  };
+
+  // Display wishlist products
+  const handleShowWishlist = () => {
+    setShowWishlist((prev) => !prev);
+
+    if (!showWishlist) {
+      const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      setFilteredProducts(savedWishlist);
+    } else {
+      setFilteredProducts(products);
+    }
+  };
 
   return (
     <div className="products-page">
