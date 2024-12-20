@@ -21,7 +21,8 @@ const Login = () => {
     e.preventDefault();
     const result = await dispatch(loginUser(credentials));
     if (result.meta.requestStatus === "fulfilled") {
-      navigate("/"); // Redirect to homepage on successful login
+      navigate("/");
+      window.location.reload(); // Redirect to homepage on successful login
     }
   };
 
