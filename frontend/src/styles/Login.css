@@ -1,76 +1,80 @@
 /* Login Container */
+
+.form-wrapper {
+  height: 100vh;
+  width: 100%;
+}
+
 .form-container {
-    width: 100%;
-    max-width: 400px;
-    margin: 40px auto;
-    padding: 20px;
-    border: 1px solid var(--mainColor);
-    border-radius: 10px;
-    background-color: var(--secondaryColor);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  /* Title */
-  .form-container h2 {
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--mainColor);
-    margin-bottom: 20px;
-  }
-  
-  /* Input Fields */
-  .form-container input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid var(--mainColor);
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  /* Login Button */
-  .form-container button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 20px;
-    border: none;
-    border-radius: 20px;
-    background-color: var(--mainColor);
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .form-container button:hover {
-    background-color: rgb(34, 90, 130);
-    transform: scale(1.05);
-  }
-  
-  .forgot-password {
-    margin-top: 10px;
-  }
-  
-  .forgot-password a {
-    color: var(--mainColor);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-  }
-  
-  .forgot-password a:hover {
-    color: rgb(34, 90, 130);
-    text-shadow: 0 0 5px rgba(34, 90, 130, 0.7);
-  }
-  
-  /* Error Message */
-  .error-message {
-    color: red;
-    margin-top: 10px;
-    font-size: 14px;
-  }
-  
-  
+  width: 100%;
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  border: 1px solid var(--mainColor);
+  border-radius: 10px;
+  background-color: var(--secondaryColor);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Title */
+.form-container h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--mainColor);
+  margin-bottom: 20px;
+}
+
+/* Input Fields */
+.form-container input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid var(--mainColor);
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Login Button */
+.form-container button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: var(--mainColor);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.form-container button:hover {
+  background-color: rgb(34, 90, 130);
+  transform: scale(1.05);
+}
+
+.forgot-password {
+  margin-top: 10px;
+}
+
+.forgot-password a {
+  color: var(--mainColor);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.forgot-password a:hover {
+  color: rgb(34, 90, 130);
+  text-shadow: 0 0 5px rgba(34, 90, 130, 0.7);
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+}
