@@ -3,17 +3,24 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import Cookies from "js-cookie";
 import Loader from "../components/UI/Loader";
+import notfound from "../assets/images/notfound.jpg";
+import "../styles/Products.css";
 
 function Products() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState({ sort: "", query: "" });
+  const [wishlist, setWishlist] = useState(
+    JSON.parse(localStorage.getItem("wishlist")) || []
+  );
+  const [showWishlist, setShowWishlist] = useState(false);
+
   const navigate = useNavigate();
+  const categoryID = Cookies.get("categoryID");
 
   // Fetch products
   const fetchProducts = async () => {
-    const categoryID = Cookies.get("categoryID");
     const response = await axiosInstance.get(
       `products/?category=${categoryID}`
     );
@@ -53,121 +60,99 @@ function Products() {
     setFilteredProducts(updatedProducts);
   }, [filter, products]);
 
+  // Add/Remove product from wishlist
+  const toggleWishlist = (product) => {
+    let updatedWishlist;
+
+    if (wishlist.some((item) => item.id === product.id)) {
+      updatedWishlist = wishlist.filter((item) => item.id !== product.id);
+    } else {
+      updatedWishlist = [...wishlist, product];
+    }
+
+    setWishlist(updatedWishlist);
+    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+  };
+
+  // Display wishlist products
+  const handleShowWishlist = () => {
+    setShowWishlist((prev) => !prev);
+
+    if (!showWishlist) {
+      const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      setFilteredProducts(savedWishlist);
+    } else {
+      setFilteredProducts(products);
+    }
+  };
+
   return (
-    <div
-      className="products-page"
-      style={{ padding: "20px", minHeight: "100vh" }}
-    >
-      <h1 style={{ marginBottom: 20 }}>Products</h1>
+    <div className="products-page">
+      <h1>Products</h1>
 
       {/* Filters */}
-      <div className="filters" style={{ marginBottom: "20px" }}>
+      <div className="filters">
         <input
           type="text"
           name="query"
           placeholder="Search products..."
           value={filter.query}
           onChange={handleFilterChange}
-          style={{
-            padding: "10px",
-            marginRight: "10px",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-            minWidth: "400px",
-          }}
         />
-        <select
-          name="sort"
-          value={filter.sort}
-          onChange={handleFilterChange}
-          style={{
-            padding: "10px",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-          }}
-        >
+        <select name="sort" value={filter.sort} onChange={handleFilterChange}>
           <option value="">Sort by</option>
           <option value="price">Price</option>
           <option value="name">Name</option>
         </select>
+        <button onClick={handleShowWishlist}>
+          {showWishlist ? "Back to Products" : "View Wishlist"}
+        </button>
       </div>
 
       {/* Conditional Rendering */}
       {isLoading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "70vh",
-          }}
-        >
+        <div className="loader-container">
           <Loader />
         </div>
       ) : filteredProducts.length === 0 ? (
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: "20px",
-            color: "#555",
-            fontSize: "18px",
-          }}
-        >
-          No available products
-        </div>
+        <div className="no-products">No available products</div>
       ) : (
-        <div
-          className="product-list"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "20px",
-          }}
-        >
+        <div className="product-list">
           {filteredProducts.map((product) => (
             <div
               key={product.id}
               className="product-item"
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "10px",
-                padding: "10px",
-                textAlign: "center",
-              }}
+              onClick={() => navigate(`/products/${product.id}`)}
             >
-              {/* Check if there are images and display the first image */}
+              {/* Product Image */}
               <img
                 src={
-                  product.images.length > 0
-                    ? product.images[0].image
-                    : "placeholder.jpg"
+                  product.images.length > 0 ? product.images[0].image : notfound
                 }
                 alt={product.name}
-                style={{
-                  width: "100%",
-                  height: "150px",
-                  objectFit: "cover",
-                  borderRadius: "10px 10px 0 0",
-                }}
               />
-              <h3 style={{ fontSize: "18px", margin: "10px 0" }}>
-                {product.name}
-              </h3>
-              <p style={{ color: "#888", marginBottom: "10px" }}>
-                ${product.price}
-              </p>
+
+              {/* Product Name */}
+              <h3>{product.name}</h3>
+
+              {/* Product Price */}
+              <p>{product.price}₸</p>
+
+              {/* Wishlist Button */}
               <button
-                style={{
-                  padding: "10px 20px",
-                  backgroundColor: "rgb(44, 109, 158)",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
+                className={
+                  wishlist.some((item) => item.id === product.id)
+                    ? "remove-from-wishlist"
+                    : "add-to-wishlist"
+                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleWishlist(product);
                 }}
-                onClick={() => navigate(`/products/${product.id}`)}
               >
-                View Details
+                {wishlist.some((item) => item.id === product.id)
+                  ? "Remove from Wishlist"
+                  : "Add to Wishlist"}
               </button>
             </div>
           ))}
