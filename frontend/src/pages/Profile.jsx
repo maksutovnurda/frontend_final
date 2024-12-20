@@ -72,7 +72,7 @@ const Profile = () => {
 
   const handleLogout = () => {
     dispatch(clearUser());
-    navigate('/');
+    navigate('/home');
   };
 
   return (

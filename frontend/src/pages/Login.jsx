@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     const result = await dispatch(loginUser(credentials));
     if (result.meta.requestStatus === "fulfilled") {
-      navigate("/"); // Redirect to homepage on successful login
+      navigate("/home"); // Redirect to homepage on successful login
     }
   };
 

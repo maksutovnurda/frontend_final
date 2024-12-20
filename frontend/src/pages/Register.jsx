@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../features/user/userSlice';
+import { registerUser, loginUser } from '../features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
@@ -30,7 +30,12 @@ const Register = () => {
 
     const result = await dispatch(registerUser(formData));
     if (result.meta.requestStatus === 'fulfilled') {
-      navigate('/'); // Redirect to homepage after successful registration
+      const loginResult = await dispatch(
+        loginUser({ username: formData.username, password: formData.password })
+      );
+      if (loginResult.meta.requestStatus === 'fulfilled') {
+        navigate('/home'); // Redirect to homepage
+      }
     }
   };
 
