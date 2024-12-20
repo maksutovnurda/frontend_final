@@ -4,7 +4,6 @@ import { FaStar } from "react-icons/fa";
 import axiosInstance from "../api/axiosInstance";
 import Cookies from "js-cookie";
 import Loader from "../components/UI/Loader";
-import notfound from "../assets/images/notfound.jpg";
 import ProductCardSkeleton from '../components/UI/ProductCardSkeleton';
 import "../styles/Products.css";
 
@@ -13,16 +12,11 @@ function Products() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState({ sort: "", query: "" });
-  const [wishlist, setWishlist] = useState(
-    JSON.parse(localStorage.getItem("wishlist")) || []
-  );
-  const [showWishlist, setShowWishlist] = useState(false);
-
   const navigate = useNavigate();
-  const categoryID = Cookies.get("categoryID");
 
   // Fetch products
   const fetchProducts = async () => {
+    const categoryID = Cookies.get("categoryID");
     const response = await axiosInstance.get(
       `products/?category=${categoryID}`
     );
@@ -62,53 +56,8 @@ function Products() {
     setFilteredProducts(updatedProducts);
   }, [filter, products]);
 
-  // Add/Remove product from wishlist
-  const toggleWishlist = (product) => {
-    let updatedWishlist;
-
-    if (wishlist.some((item) => item.id === product.id)) {
-      updatedWishlist = wishlist.filter((item) => item.id !== product.id);
-    } else {
-      updatedWishlist = [...wishlist, product];
-    }
-
-    setWishlist(updatedWishlist);
-    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
-  };
-
-  // Display wishlist products
-  const handleShowWishlist = () => {
-    setShowWishlist((prev) => !prev);
-
-    if (!showWishlist) {
-      const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-      setFilteredProducts(savedWishlist);
-    } else {
-      setFilteredProducts(products);
-    }
-  };
-
   return (
     <div className="products-page">
-      <h1>Products</h1>
-
-      {/* Filters */}
-      <div className="filters">
-        <input
-          type="text"
-          name="query"
-          placeholder="Search products..."
-          value={filter.query}
-          onChange={handleFilterChange}
-        />
-        <select name="sort" value={filter.sort} onChange={handleFilterChange}>
-          <option value="">Sort by</option>
-          <option value="price">Price</option>
-          <option value="name">Name</option>
-        </select>
-        <button onClick={handleShowWishlist}>
-          {showWishlist ? "Back to Products" : "View Wishlist"}
-        </button>
       <div className="products-header">
         <h1>Our Products</h1>
         <div className="filters">
@@ -134,49 +83,6 @@ function Products() {
       </div>
 
       {isLoading ? (
-        <div className="loader-container">
-          <Loader />
-        </div>
-      ) : filteredProducts.length === 0 ? (
-        <div className="no-products">No available products</div>
-      ) : (
-        <div className="product-list">
-          {filteredProducts.map((product) => (
-            <div
-              key={product.id}
-              className="product-item"
-              onClick={() => navigate(`/products/${product.id}`)}
-            >
-              {/* Product Image */}
-              <img
-                src={
-                  product.images.length > 0 ? product.images[0].image : notfound
-                }
-                alt={product.name}
-              />
-
-              {/* Product Name */}
-              <h3>{product.name}</h3>
-
-              {/* Product Price */}
-              <p>{product.price}₸</p>
-
-              {/* Wishlist Button */}
-              <button
-                className={
-                  wishlist.some((item) => item.id === product.id)
-                    ? "remove-from-wishlist"
-                    : "add-to-wishlist"
-                }
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleWishlist(product);
-                }}
-              >
-                {wishlist.some((item) => item.id === product.id)
-                  ? "Remove from Wishlist"
-                  : "Add to Wishlist"}
-              </button>
         <div className="product-grid">
           {[...Array(9)].map((_, index) => (
             <ProductCardSkeleton key={index} />
