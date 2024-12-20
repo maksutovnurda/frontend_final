@@ -1,4 +1,5 @@
-import React, { use, useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "../api/axiosInstance";
 import CategoriesList from "../components/CategoriesList";
 import Loader from "../components/UI/Loader";
@@ -18,7 +19,9 @@ const Home = () => {
 
   return (
     <div style={{ minHeight: "100vh" }}>
-      <h1 className="welcomeText">Internet Store Yelaman Kotek</h1>
+      <h1 className="welcomeText">
+        <span style={{ color: "rgb(44, 109, 158)" }}>GrabIt. </span>Online Store
+      </h1>
       <div className="categories">
         {isLoading ? <Loader /> : <CategoriesList categories={categories} />}
       </div>
