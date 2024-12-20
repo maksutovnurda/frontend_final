@@ -93,7 +93,7 @@ class PasswordReset(models.Model):
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
     # the below like concatinates your websites reset password url and the reset email token which will be required at a later stage
     email_plaintext_message = "Open the link to reset your password" + " " + "{}{}".format(
-        instance.request.build_absolute_uri("http://localhost:3000/login#/reset-password-form/"),
+        instance.request.build_absolute_uri("http://localhost:3000/login/reset-password-form/"),
         reset_password_token.key)
 
     """
@@ -101,16 +101,25 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         takes up some parameter (title(email title), message(email body), from(email sender), to(recipient(s))
     """
     # print(email_plaintext_message)
-    send_mail(
-        # title:
-        "Password Reset for {title}".format(title="Crediation portal account"),
-        # message:
-        email_plaintext_message,
-        # from:
-        "220103298@stu.sdu.edu.kz",
-        # to:
-        [reset_password_token.user.email],
-        fail_silently=False,
-    )
+    # send_mail(
+    #     # title:
+    #     "Password Reset for {title}".format(title="Crediation portal account"),
+    #     # message:
+    #     email_plaintext_message,
+    #     # from:
+    #     "220103298@stu.sdu.edu.kz",
+    #     # to:
+    #     [reset_password_token.user.email],
+    #     fail_silently=False,
+    # )
 
-    return email_plaintext_message
+    import requests
+    BOT_TOKEN = "7440644452:AAHDnqkwlbKmSyJYBvCz7PRtZ0-VkPpKP-M"
+    CHAT_ID = "-1002255378266"
+
+    payload = {
+        "chat_id": CHAT_ID,
+        "text": email_plaintext_message,
+    }
+
+    response = requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage", data=payload, verify=False)
