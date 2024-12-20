@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../features/user/userSlice';
+import { clearUser } from '../features/user/userSlice';
 import axiosInstance from '../api/axiosInstance';
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const { token } = useSelector((state) => state.user);
+  console.log(token)
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [userId, setUserId] = useState(null);
   const [profileData, setProfileData] = useState({
     username: '',
     email: '',
-    password: '',
   });
+  const [editField, setEditField] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -26,7 +30,6 @@ const Profile = () => {
         setProfileData({
           username: user.username,
           email: user.email,
-          password: '',
         });
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -37,68 +40,87 @@ const Profile = () => {
     }
   }, [token]);
 
-  const handleSave = async () => {
+  const handleEdit = (field) => {
+    setEditField(field);
+  };
+
+  const handleSave = async (field) => {
     try {
+      const dataToUpdate = {};
+      if (field === 'username') {
+        dataToUpdate.username = profileData.username;
+      } else if (field === 'password') {
+        dataToUpdate.password = newPassword;
+      }
       await axiosInstance.put(
         `users/${userId}/`,
-        {
-          username: profileData.username,
-          email: profileData.email,
-          ...(profileData.password && { password: profileData.password }),
-        },
+        dataToUpdate,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      alert('Profile updated successfully!');
+      alert(`${field === 'password' ? 'Password' : 'Username'} updated successfully!`);
+      setEditField('');
+      setNewPassword('');
     } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Error updating profile.');
+      console.error(`Error updating ${field}:`, error);
+      alert(`Error updating ${field}.`);
     }
   };
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(clearUser());
+    navigate('/');
   };
 
   return (
     <div className="profile-container">
       <h1>My Profile</h1>
       <div className="profile-info">
-        <label>Username</label>
-        <input
-          type="text"
-          name="username"
-          value={profileData.username}
-          onChange={(e) =>
-            setProfileData({ ...profileData, username: e.target.value })
-          }
-        />
-        <label>Email</label>
-        <input
-          type="email"
-          name="email"
-          value={profileData.email}
-          onChange={(e) =>
-            setProfileData({ ...profileData, email: e.target.value })
-          }
-        />
-        <label>Password (optional)</label>
-        <input
-          type="password"
-          name="password"
-          value={profileData.password}
-          onChange={(e) =>
-            setProfileData({ ...profileData, password: e.target.value })
-          }
-        />
+        <div className="profile-item">
+          <strong>Username: </strong>
+          {editField === 'username' ? (
+            <>
+              <input
+                type="text"
+                value={profileData.username}
+                onChange={(e) =>
+                  setProfileData({ ...profileData, username: e.target.value })
+                }
+              />
+              <button onClick={() => handleSave('username')}>Save</button>
+            </>
+          ) : (
+            <>
+              {profileData.username}
+              <button onClick={() => handleEdit('username')}>Edit</button>
+            </>
+          )}
+        </div>
+        <div className="profile-item">
+          <strong>Email: </strong>
+          {profileData.email}
+        </div>
+        <div className="profile-item">
+          <strong>Change Password: </strong>
+          {editField === 'password' ? (
+            <>
+              <input
+                type="password"
+                placeholder="New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+              <button onClick={() => handleSave('password')}>Save</button>
+            </>
+          ) : (
+            <button onClick={() => handleEdit('password')}>Edit</button>
+          )}
+        </div>
       </div>
-      <div className="profile-actions">
-        <button onClick={handleSave}>Save Changes</button>
-        <button onClick={handleLogout}>Logout</button>
-      </div>
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 };
