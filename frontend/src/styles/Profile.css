@@ -1,0 +1,103 @@
+/* Profile Item Styles */
+.profile-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensures even spacing between items */
+    margin-bottom: 20px;
+  }
+  
+  .profile-item strong {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .profile-item input {
+    flex: 1; /* Takes up available space */
+    padding: 8px 10px;
+    border: 1px solid var(--mainColor);
+    border-radius: 5px;
+    font-size: 16px;
+    margin-left: 10px; /* Adds spacing from the label */
+    margin-right: 10px; /* Adds spacing from the button */
+  }
+  
+  .profile-item button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 20px;
+    background-color: var(--mainColor);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .profile-item button:hover {
+    background-color: rgb(34, 90, 130);
+    transform: scale(1.05);
+  }
+  
+  /* Centered Change Password Button */
+  .change-password-button {
+    display: block;
+    margin: 20px auto; /* Centers the button horizontally */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: var(--mainColor);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+  
+  .change-password-button:hover {
+    background-color: rgb(34, 90, 130);
+    transform: scale(1.05);
+  }
+  
+  /* Logout Button */
+  .logout-button {
+    width: 100%;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: rgb(220, 53, 69);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+  
+  .logout-button:hover {
+    background-color: rgb(200, 35, 50);
+    transform: scale(1.05);
+  }
+  
+  /* Profile Container */
+  .profile-container {
+    width: 100%;
+    max-width: 450px;
+    margin: 40px auto;
+    padding: 20px;
+    border: 1px solid var(--mainColor);
+    border-radius: 10px;
+    background-color: var(--secondaryColor);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Aligns content to the left */
+  }
+  
+  .profile-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--mainColor);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
