@@ -109,7 +109,7 @@
 .product-price {
   display: flex;
   align-items: center;
-  margin: 0; 
+  margin: 0;
 }
 
 .price-main {
@@ -177,15 +177,21 @@
 .shimmer {
   width: 50%;
   height: 100%;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   transform: skewX(-20deg);
-  box-shadow: 0 0 30px 30px rgba(255,255,255,0.2);
+  box-shadow: 0 0 30px 30px rgba(255, 255, 255, 0.2);
 }
 
 @keyframes loading {
-  0% { transform: translateX(-150%); }
-  50% { transform: translateX(-60%); }
-  100% { transform: translateX(150%); }
+  0% {
+    transform: translateX(-150%);
+  }
+  50% {
+    transform: translateX(-60%);
+  }
+  100% {
+    transform: translateX(150%);
+  }
 }
 
 @media (max-width: 1200px) {

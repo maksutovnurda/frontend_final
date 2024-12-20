@@ -1,11 +1,11 @@
 .store-header {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 1.5rem 15rem;
   width: 100%;
   color: white;
-  background-color: var(--mainColor);
+  background-color: #038aff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -19,6 +19,7 @@
 
 .nav-links {
   display: flex;
+  align-items: center;
   gap: 1.5rem;
   cursor: pointer;
 }
@@ -31,13 +32,30 @@
   font-weight: 400;
 }
 
-.nav-links a:hover {
+.nav-links :hover {
   color: #f9690e;
 }
 
 .header-buttons {
   display: flex;
   gap: 0.5rem;
+}
+
+.product-input {
+  flex: 1;
+  padding: 12px 10px;
+  width: 100%;
+  max-width: 600px;
+  border: 2px solid #eef2f6;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.product-input:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .btn {

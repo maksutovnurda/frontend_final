@@ -1,9 +1,13 @@
 import React from "react";
+import { useState } from "react";
 import "../../styles/Header.css";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
+import { MdAccountCircle } from "react-icons/md";
 
 const Header = () => {
+  const token = Cookies.get("access_token");
+
   return (
     <header className="store-header">
       <div className="logo">
@@ -24,12 +28,21 @@ const Header = () => {
         <Link style={{ textDecoration: "none", color: "white" }} to={"/shop"}>
           Shop
         </Link>
-        <a href="#contact">Contact</a>
+        {token ? (
+          <MdAccountCircle size={30} />
+        ) : (
+          <>
+            <button className="btn btn-primary">
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to={"/login"}
+              >
+                Login
+              </Link>
+            </button>
+          </>
+        )}
       </nav>
-      <div className="header-buttons">
-        <button className="btn btn-primary">Sign In</button>
-        <button className="btn btn-secondary">Sign Up</button>
-      </div>
     </header>
   );
 };
