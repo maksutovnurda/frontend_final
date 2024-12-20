@@ -8,7 +8,7 @@ const CategoriesList = ({ categories }) => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 15 }}>
-      <h1 style={{ fontWeight: 600, fontSize: 25 }}>Sections</h1>
+      <h1 style={{ fontWeight: 600, fontSize: 25 }}>Categories</h1>
       <div className="categoriesList">
         {categories.map((category, index) => (
           <CategoryItem key={index} category={category} />
